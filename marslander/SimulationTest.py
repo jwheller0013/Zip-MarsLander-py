@@ -19,7 +19,9 @@ class SimulationTest(unittest.TestCase):
         burnSource = BurnDataStream(burns)
         game = Simulation(Vehicle(5000))
         result = game.run_simulation(burnSource)
-        self.assertEqual(result, Vehicle.SUCCESS)
+        print(result)
+        print(Vehicle.SUCCESS)
+        self.assertEqual(Vehicle.SUCCESS, result)
 
     def test_runSimulationCrash(self):
         burns = [0, 0, 0, 0, 0]

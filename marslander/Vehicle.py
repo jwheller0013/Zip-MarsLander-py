@@ -1,3 +1,5 @@
+from marslander.DescentEvent import DescentEvent
+
 
 class Vehicle:
     gravity = 100
@@ -16,8 +18,8 @@ class Vehicle:
     def __init__(self, initial_altitude):
         # initialize the altitude AND previous altitude to initialAltitude
 
-        self.altitude= 8000
-        self.prev_altitude= 8000
+        self.altitude= initial_altitude
+        self.prev_altitude= initial_altitude
 
         self.velocity= 1000
         self.fuel = 12000
@@ -78,8 +80,11 @@ class Vehicle:
         # create a return a new DescentEvent object
         # filled in with the state of the vehicle.
         pass
+        return DescentEvent(tick, self.velocity, self.fuel, self.altitude, self.flying)
 
-x = Vehicle(1000)
-print(x.still_flying())
-print(x.out_of_fuel())
-print(x.compute_deltaV())
+# x = Vehicle(1000)
+# print(x.still_flying())
+# print(x.out_of_fuel())
+# print(x.compute_deltaV())
+# print(x.get_status(1))
+# print(Vehicle.CRASHED)
