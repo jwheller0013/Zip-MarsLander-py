@@ -14,6 +14,7 @@ class Simulation:
 
     def __init__(self, vehicle):
         self.vehicle = vehicle
+        self.onboard_computer = None
 
     @staticmethod
     def random_altitude():
@@ -61,7 +62,15 @@ class Simulation:
         # print(f"Initial still_flying: {self.vehicle.still_flying()}")
         while self.vehicle.still_flying():
             status = self.vehicle.get_status(burn_interval)
+            onboard_computer = OnBoardComputer(status)
             print(f"{status}\t\t")
+
+            # if isinstance(burn_source, BurnInputStream):
+            #     burn = burn_source.get_next_burn(status)
+            # elif isinstance(burn_source, OnBoardComputer):
+            #     burn = onboard_computer.get_next_burn()
+            #adjusted to allow OnBoardComputer to be called
+            #working on this change "burn_source.get_next_burn(status)" below for burn
             self.vehicle.adjust_for_burn(burn_source.get_next_burn(status))
             if self.vehicle.out_of_fuel():
                 break
@@ -80,10 +89,13 @@ class Simulation:
 
     @staticmethod
     def main():
+        # create a new Simulation object with a random starting altitude (moved it to top so can start with it)
+        game = Simulation(Vehicle(Simulation.random_altitude()))
         # create a new BurnInputStream
         burnSource = BurnInputStream()
-        # create a new Simulation object with a random starting altitude
-        game = Simulation(Vehicle(Simulation.random_altitude()))
+        # how about using the OnBoardComputer
+        # burnSource = OnBoardComputer()
+
         # pass the new BurnInputStream to the run_simulation method
         result = game.run_simulation(burnSource)
         return result

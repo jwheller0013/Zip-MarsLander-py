@@ -36,13 +36,13 @@ class SimulationTest(unittest.TestCase):
         burnSource = OnBoardComputer()
         game = Simulation(Vehicle(10000))
         result = game.run_simulation(burnSource)
-        self.assertEqual(result, Vehicle.SUCCESS)
+        self.assertEqual(Vehicle.SUCCESS, result)
 
     def test_runSimulationComputerRandom(self):
         burnSource = OnBoardComputer()
         game = Simulation(Vehicle(Simulation.random_altitude()))
         result = game.run_simulation(burnSource)
-        self.assertEqual(result, Vehicle.SUCCESS)
+        self.assertEqual(Vehicle.SUCCESS, result)
 
 if __name__ == '__main__':
     unittest.main()
