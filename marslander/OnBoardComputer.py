@@ -1,29 +1,42 @@
 from DescentEvent import DescentEvent
 
 class OnBoardComputer:
-    def __init__(self, descent_event):
-        self.descent_event = descent_event
+    # def __init__(self, descent_event):
+    #     self.descent_event = descent_event
+    # turned out this part was not needed
 
     def get_next_burn(self, status):
-        alt = self.descent_event.get_altitude()
-        velocity = self.descent_event.get_velocity()
+        alt = status.get_altitude()
+        velocity = status.get_velocity()
 
-        burn = 0
+        burn = 200
 
-        if 1000 < alt < 4500:
+        if alt > 6500:
+            if velocity >= 1000:
+                burn = 200
+            else:
+                burn = 0
+
+        elif 1000 < alt <= 6500:
             if velocity == 0:
                 burn = 0
             else:
                 burn = 200
 
-        elif alt < 1000 and 100 <= velocity < 103:
-            burn = 100
+        elif 100 < alt <= 1000:
+            if velocity > 102:
+                burn = 200
+            elif 100 <= velocity < 102:
+                burn = 100
 
-        elif alt < 100 and velocity > 2:
-            burn = 98
-
-        elif alt < 100 and 0 < velocity < 3:
-            burn = 100
+        #I still feel like this part needs tweaking but it seems to work most times.
+        elif alt <= 100:
+            if velocity >= 100:
+                burn = 200
+            elif velocity == 0:
+                burn = 98
+            elif velocity < 5:
+                burn = 100
 
         print(burn)  # hack!
         return burn

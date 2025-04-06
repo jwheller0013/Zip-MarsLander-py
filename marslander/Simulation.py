@@ -15,13 +15,18 @@ class Simulation:
     def __init__(self, vehicle):
         self.vehicle = vehicle
         self.onboard_computer = None
+        self.descent_event = None
 
     @staticmethod
     def random_altitude():
         max_altitude = 20000
         min_altitude = 10000
         r = random.randint(min_altitude, max_altitude)
-        return (r % 15000 + 4000)
+        #had to change the return value below from 4000 to something passable like 5010
+        #if velocity starts at 1000 it takes 10 intervals to slow down to 0 or under 3 per game rules
+        # so total needed to stop = (initial speed + desired end speed)/2 * 10 since need average speed going
+        # down then times the 10 intervals needed to stop at 1000. It equals 5010
+        return (r % 15000 + 5010)
 
     def game_header(self):
         s = ""
@@ -62,7 +67,8 @@ class Simulation:
         # print(f"Initial still_flying: {self.vehicle.still_flying()}")
         while self.vehicle.still_flying():
             status = self.vehicle.get_status(burn_interval)
-            onboard_computer = OnBoardComputer(status)
+            # comp_status = self.vehicle.comp_status()
+            # onboard_computer = OnBoardComputer(comp_status)
             print(f"{status}\t\t")
 
             # if isinstance(burn_source, BurnInputStream):
@@ -72,6 +78,7 @@ class Simulation:
             #adjusted to allow OnBoardComputer to be called
             #working on this change "burn_source.get_next_burn(status)" below for burn
             self.vehicle.adjust_for_burn(burn_source.get_next_burn(status))
+            self.descent_event = self.vehicle.get_status(burn_interval)
             if self.vehicle.out_of_fuel():
                 break
             burn_interval += 1
@@ -92,9 +99,9 @@ class Simulation:
         # create a new Simulation object with a random starting altitude (moved it to top so can start with it)
         game = Simulation(Vehicle(Simulation.random_altitude()))
         # create a new BurnInputStream
-        burnSource = BurnInputStream()
+        # burnSource = BurnInputStream()
         # how about using the OnBoardComputer
-        # burnSource = OnBoardComputer()
+        burnSource = OnBoardComputer()
 
         # pass the new BurnInputStream to the run_simulation method
         result = game.run_simulation(burnSource)

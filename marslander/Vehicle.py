@@ -1,4 +1,5 @@
 from marslander.DescentEvent import DescentEvent
+from marslander.OnBoardComputer import OnBoardComputer
 
 
 class Vehicle:
@@ -84,6 +85,10 @@ class Vehicle:
         # print(f"get_status called, self.flying: {self.flying}")
         self.check_final_status()
         return DescentEvent(tick, self.velocity, self.fuel, self.altitude, self.flying)
+
+    def comp_status(self):
+        self.check_final_status()
+        return OnBoardComputer(self.velocity, self.altitude)
 
 # x = Vehicle(1000)
 # print(x.still_flying())
