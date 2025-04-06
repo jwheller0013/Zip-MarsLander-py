@@ -40,9 +40,10 @@ class Vehicle:
                 s = self.success
                 self.flying = self.SUCCESS
         else:
-            if self.altitude > 0:
+            if self.fuel <= 0:
                 s = self.emptyfuel
                 self.flying = self.EMPTYFUEL
+        # print(f"check_final_status ended, self.flying: {self.flying}")
         return s
 
 
@@ -80,6 +81,8 @@ class Vehicle:
         # create a return a new DescentEvent object
         # filled in with the state of the vehicle.
         pass
+        # print(f"get_status called, self.flying: {self.flying}")
+        self.check_final_status()
         return DescentEvent(tick, self.velocity, self.fuel, self.altitude, self.flying)
 
 # x = Vehicle(1000)

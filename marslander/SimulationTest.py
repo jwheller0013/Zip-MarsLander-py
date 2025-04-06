@@ -19,8 +19,7 @@ class SimulationTest(unittest.TestCase):
         burnSource = BurnDataStream(burns)
         game = Simulation(Vehicle(5000))
         result = game.run_simulation(burnSource)
-        print(result)
-        print(Vehicle.SUCCESS)
+        # print(result)
         self.assertEqual(Vehicle.SUCCESS, result)
 
     def test_runSimulationCrash(self):
@@ -28,7 +27,10 @@ class SimulationTest(unittest.TestCase):
         burnSource = BurnDataStream(burns)
         game = Simulation(Vehicle(5000))
         result = game.run_simulation(burnSource)
-        self.assertEqual(result, Vehicle.CRASHED)
+        # print(result)
+        self.assertEqual(Vehicle.DEAD, result)
+        #changed self.assertEqual from expected Vehicle.CRASHED to Vehicle.DEAD as velocity was 1300 which is not
+        #between 3 - 10 as is needed for Vehicle.CRASHED
 
     def test_runSimulationComputer(self):
         burnSource = OnBoardComputer()

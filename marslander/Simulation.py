@@ -58,6 +58,7 @@ class Simulation:
         burn_interval = 0
         self.print_string(self.game_header())
         self.print_string(self.get_header())
+        # print(f"Initial still_flying: {self.vehicle.still_flying()}")
         while self.vehicle.still_flying():
             status = self.vehicle.get_status(burn_interval)
             print(f"{status}\t\t")
@@ -67,10 +68,15 @@ class Simulation:
             burn_interval += 1
             if burn_interval % 9 == 0:
                 self.print_string(self.get_header())
-        self.print_string(self.vehicle.check_final_status())
-        if status is not None:
-            return status.get_status()
-        return -1
+        self.vehicle.check_final_status()
+        final_status_message = self.vehicle.check_final_status()
+        #checking something if final status is being called properly
+        self.print_string(final_status_message)
+        final_status_event = self.vehicle.get_status(burn_interval)
+        return final_status_event.get_status()
+        # if status is not None:
+        #     return status.get_status()
+        # return -1
 
     @staticmethod
     def main():
